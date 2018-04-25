@@ -1,0 +1,87 @@
+
+<div class="my-1">
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Reported Date</th>
+        <th scope="col">Report Source</th>
+        <th scope="col">Application</th>
+        <th scope="col">LOB</th>
+        <th scope="col">Policy Number</th>
+        <th scope="col" style="background-color:#b2cfff;">Insured Name</th>
+        <th scope="col">Tran Type</th>
+        <th scope="col">Failure Catgory</th>
+        <th scope="col">Comment</th>
+        <th scope="col">Status</th>
+        <th scope="col">Closure Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="ticket in srch.ticketList track by $index">
+        <td>{{ticket.id}}</td>
+        <td>{{ticket.reported_date}}</td>
+        <td>{{ticket.failure_identification_source}}</td>
+        <td>{{ticket.application_name}}</td>
+        <td>{{ticket.lob}}</td>
+        <td>{{ticket.policy_number}}</td>
+        <td style="background-color:#b2cfff;">{{ticket.insured_name}}</td>
+        <td>{{ticket.transaction_type}}</td>
+        <td class="d-flex">
+          <div class="dropdown">
+            <button disabled style="width:150px;overflow: hidden;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdowncat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ticket.failure_category}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdowncat">
+              <button disabled class="dropdown-item" type="button" ng-click="srch.changeRca(ticket.id,cat,'CAT')" ng-repeat="cat in srch.categories" ng-if="ticket.failure_category != cat" >{{cat}}</button>
+            </div>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModalLong_{{$index}}">Notes
+          </button>
+          <div class="modal fade" id="exampleModalLong_{{$index}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle_{{$index}}">NOTES</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" ng-repeat="comment in ticket.comment.split('\n')">
+                  <p>{{ comment }}</p>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <textarea class="form-control" rows="5" placeholder="Enter comment"></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="d-flex">
+          <div class="dropdown">
+            <button disabled style="width:100px;overflow: hidden;" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ticket.ticket_status}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              <button class="dropdown-item" ng-click="srch.changeStatus(ticket.id,'OPEN','STATUS')" ng-if="ticket.ticket_status != 'OPEN'" type="button">OPEN</button>
+              <button class="dropdown-item" ng-click="srch.changeStatus(ticket.id,'PENDING WITH DUCK','STATUS')" ng-if="ticket.ticket_status != 'PENDING WITH DUCK'" type="button">PENDING WITH DUCK</button>
+              <button class="dropdown-item" ng-click="srch.changeStatus(ticket.id,'PENDING WITH GENIUS','STATUS')" ng-if="ticket.ticket_status != 'PENDING WITH GENIUS'" type="button">PENDING WITH GENIUS</button>
+              <button class="dropdown-item" ng-click="srch.changeStatus(ticket.id,'PENDING WITH INTEGRATION','STATUS')" ng-if="ticket.ticket_status != 'PENDING WITH INTEGRATION'" type="button">PENDING WITH INTEGRATION</button>
+              <button class="dropdown-item" ng-click="srch.changeStatus(ticket.id,'CLOSED','STATUS')" ng-if="ticket.ticket_status != 'CLOSED'" type="button">CLOSED</button>
+            </div>
+          </div>
+        </td>
+
+        <td>{{ticket.closure_date}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
